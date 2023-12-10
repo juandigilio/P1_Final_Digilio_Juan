@@ -7,17 +7,16 @@
 
 using namespace std;
 
-Player::Player(COORD position, COORD size, int color) : Entity(position, size, color)
+Player::Player(COORD position, COORD size, Color color) : Entity(position, size, color)
 {
 	maxLives = 6;
 	availableLives = 3;
 	totalPoints = 0;
-	availableSteps = 300;
 }
 
 Player::~Player()
 {
-	cout << "Ta lueguito" << endl;
+	cout << "Player went to sleep" << endl;
 }
 
 void Player::GetInput(ConsoleHandler* console)
@@ -46,12 +45,12 @@ void Player::AddLives(int lives)
 void Player::LoadTexture()
 {
 	char textureToLoad[6][4] = {
-	{' ',201,205,62},
-	{' ',202,' ',' '},
-	{' ',' ',' ',' '},
-	{' ',' ',' ',' '},
-	{' ',203,' ',' '},
-	{' ',200,205,62},
+	{' ',201,62,' '},
+	{' ',186,' ',' '},
+	{201,202,205,187},
+	{200,203,205,187},
+	{' ',186,' ',' '},
+	{' ',200,62,' '},
 	};
 
 	for (int i = 0; i < size.X; i++)
@@ -90,22 +89,6 @@ void Player::Move(ConsoleHandler* console)
 
 		UpdateTexturePositions();
 	}
-	else if (input == 'D')
-	{
-		actualPos.X++;
-
-		CheckLimits(console);
-
-		UpdateTexturePositions();
-	}
-	else if (input == 'A')
-	{
-		actualPos.X--;
-
-		CheckLimits(console);
-
-		UpdateTexturePositions();
-	}
 
 	input = ' ';
 }
@@ -114,8 +97,6 @@ void Player::CheckLimits(ConsoleHandler* console)
 {
 	int topLimit = 1;
 	int bottomLimit = console->consoleHeight - size.Y - 2;
-	int leftLimit = 1;
-	int rightLimit = console->consoleWide - size.X - 1;
 
 	if (actualPos.Y > bottomLimit)
 	{
@@ -124,18 +105,5 @@ void Player::CheckLimits(ConsoleHandler* console)
 	else if (actualPos.Y < topLimit)
 	{
 		actualPos.Y = topLimit;
-	}
-	else if (actualPos.X > rightLimit)
-	{
-		actualPos.X = rightLimit;
-	}
-	else if (actualPos.X < leftLimit)
-	{
-		actualPos.X = leftLimit;
-	}
-	else
-	{
-		availableSteps--;
-		totalPoints += 10;
 	}
 }

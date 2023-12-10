@@ -19,11 +19,13 @@ protected:
 	COORD lastPos;
 	COORD size;
 	Texture** texture;
+	Color color;
+	bool isAlive;
 
 
 public:
 
-	Entity(COORD position, COORD size, int color);
+	Entity(COORD position, COORD size, Color color);
 	virtual ~Entity();
 
 	void UpdateTexturePositions();

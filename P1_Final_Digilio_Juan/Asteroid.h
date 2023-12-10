@@ -1,0 +1,19 @@
+#pragma once
+
+#include "Entity.h"
+
+
+using namespace std;
+
+class Asteroid : public Entity
+{
+public:
+
+	Asteroid(COORD position, COORD size, Color color);
+	~Asteroid();
+
+	void LoadTexture();
+	void Move(ConsoleHandler* console);
+	void CheckLimits(ConsoleHandler* console);
+	void SetRandPos(ConsoleHandler* console);
+};

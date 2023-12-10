@@ -21,10 +21,10 @@ Menu::~Menu()
 
 void Menu::ShowMenu(ConsoleHandler& consoleData)
 {
-	string welcome = ">>Bienvenido a Pac-Boy<<";
-	string option1 = "1- Nuevo juego";
-	string option2 = "2- Instrucciones";
-	string option3 = "ESC para salir";
+	string welcome = ">>Wellcome to the last ride<<";
+	string option1 = "1- New game";
+	string option2 = "2- Instructions";
+	string option3 = "ESC - Exit";
 	string clean = "                               ";
 	COORD thisCursor{};
 
@@ -123,7 +123,7 @@ void Menu::ShowMenu(ConsoleHandler& consoleData)
 
 void Menu::ShowInstructions(ConsoleHandler& consoleData)
 {
-	string inst1 = "A W S D para moverse...";
+	string inst1 = "W/S to move and SPACE to shoot...";
 	string clean = "                                   ";
 
 	consoleData.cursorPosition.X = (consoleData.consoleWide / 2) - (inst1.length() / 2);

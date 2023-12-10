@@ -6,11 +6,13 @@
 using namespace std;
 
 
-Entity::Entity(COORD position, COORD size, int color)
+Entity::Entity(COORD position, COORD size, Color color)
 {
 	this->actualPos = position;
 	lastPos = actualPos;
 	this->size = size;
+	this->color = color;
+	isAlive = true;
 	
 	texture = new Texture* [size.X];
 
@@ -25,7 +27,6 @@ Entity::Entity(COORD position, COORD size, int color)
 	{
 		for (int j = 0; j < size.Y; j++)
 		{
-			texture[i][j].color = color;
 			texture[i][j].isPainted = false;
 			texture[i][j].position.X = aux.X;
 			texture[i][j].position.Y = aux.Y;
@@ -66,7 +67,7 @@ void Entity::Draw(ConsoleHandler* console)
 
 	COORD cursorPos = actualPos;
 
-	SetConsoleTextAttribute(console->hwnd, texture[0][0].color);
+	SetConsoleTextAttribute(console->hwnd, color);
 
 	for (int i = 0; i < size.X; i++)
 	{
@@ -87,7 +88,7 @@ void Entity::Clean(ConsoleHandler* console)
 	cursorPos.X = lastPos.X;
 	cursorPos.Y = lastPos.Y;
 
-	SetConsoleTextAttribute(console->hwnd, texture[0][0].color);
+	SetConsoleTextAttribute(console->hwnd, color);
 
 	for (int i = 0; i < size.X; i++)
 	{
@@ -104,9 +105,10 @@ void Entity::Clean(ConsoleHandler* console)
 	lastPos = actualPos;
 }
 
-void Entity::SetPosition(ConsoleHandler* console, COORD position)
+void Entity::SetPosition(ConsoleHandler* console, COORD newPosition)
 {
-	actualPos = position;
+	lastPos = actualPos;
+	actualPos = newPosition;
 
 	Clean(console);
 
@@ -132,8 +134,7 @@ bool Entity::CheckCollision(Texture** entity, COORD entitySize)
 						{
 							return true;
 						}
-					}
-					
+					}			
 				}
 			}
 		}
