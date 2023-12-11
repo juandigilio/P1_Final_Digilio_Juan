@@ -6,26 +6,27 @@
 using namespace std;
 
 
-Entity::Entity(COORD position, COORD size, Color color)
+Entity::Entity(COORD position, COORD size, Color color, int refreshRate)
 {
 	this->actualPos = position;
 	lastPos = actualPos;
 	this->size = size;
 	this->color = color;
+	this->refreshRate = refreshRate;
 	isAlive = true;
 	
-	texture = new Texture* [size.X];
+	texture = new Texture* [size.Y];
 
-	for (int i = 0; i < size.X; i++)
+	for (int i = 0; i < size.Y; i++)
 	{
-		texture[i] = new Texture[size.Y];
+		texture[i] = new Texture[size.X];
 	}
 
 	COORD aux = position;
 
-	for (int i = 0; i < size.X; i++)
+	for (int i = 0; i < size.Y; i++)
 	{
-		for (int j = 0; j < size.Y; j++)
+		for (int j = 0; j < size.X; j++)
 		{
 			texture[i][j].isPainted = false;
 			texture[i][j].position.X = aux.X;
@@ -35,22 +36,23 @@ Entity::Entity(COORD position, COORD size, Color color)
 		aux.X = position.X;
 		aux.Y++;
 	}
+
+	timer = new Timer();
 }
 
 Entity::~Entity()
 {
 	delete[] texture;
-
-	cout << "Entity destroyed" << endl;
+	delete timer;
 }
 
 void Entity::UpdateTexturePositions()
 {
 	COORD aux = actualPos;
 
-	for (int i = 0; i < size.X; i++)
+	for (int i = 0; i < size.Y; i++)
 	{
-		for (int j = 0; j < size.Y; j++)
+		for (int j = 0; j < size.X; j++)
 		{
 			texture[i][j].position.X = aux.X;
 			texture[i][j].position.Y = aux.Y;
@@ -63,42 +65,55 @@ void Entity::UpdateTexturePositions()
 
 void Entity::Draw(ConsoleHandler* console)
 {
+	int leftLimit = 1;
+	int rightLimit = console->consoleWide - 1;
+
 	Clean(console);
 
-	COORD cursorPos = actualPos;
-
-	SetConsoleTextAttribute(console->hwnd, color);
-
-	for (int i = 0; i < size.X; i++)
+	if (isAlive)
 	{
-		SetConsoleCursorPosition(console->hwnd, cursorPos);
+		COORD cursorPos = actualPos;
 
-		for (int j = 0; j < size.Y; j++)
+		SetConsoleTextAttribute(console->hwnd, color);
+
+		for (int i = 0; i < size.Y; i++)
 		{
-			cout << texture[i][j].image;
-		}
+			SetConsoleCursorPosition(console->hwnd, cursorPos);
 
-		cursorPos.Y++;
-	}
+			for (int j = 0; j < size.X; j++)
+			{
+				if (texture[i][j].position.X > leftLimit && texture[i][j].position.X < rightLimit)
+				{
+					cout << texture[i][j].image;
+				}
+			}
+
+			cursorPos.Y++;
+		}
+	}	
 }
 
 void Entity::Clean(ConsoleHandler* console)
 {
-	COORD cursorPos;
-	cursorPos.X = lastPos.X;
-	cursorPos.Y = lastPos.Y;
+	COORD cursorPos = lastPos;
+
+	int leftLimit = 1;
+	int rightLimit = console->consoleWide - 2;
 
 	SetConsoleTextAttribute(console->hwnd, color);
 
-	for (int i = 0; i < size.X; i++)
+	for (int i = 0; i < size.Y; i++)
 	{
 		SetConsoleCursorPosition(console->hwnd, cursorPos);
 
-		for (int j = 0; j < size.Y; j++)
+		if (cursorPos.X > leftLimit && cursorPos.X < rightLimit)
 		{
-			cout << ' ';
+			for (int j = 0; j < size.X; j++)
+			{
+				cout << ' ';
+			}
 		}
-
+		
 		cursorPos.Y++;
 	}
 
@@ -117,13 +132,13 @@ void Entity::SetPosition(ConsoleHandler* console, COORD newPosition)
 
 bool Entity::CheckCollision(Texture** entity, COORD entitySize)
 {
-	for (int i = 0; i < this->size.X; i++)
+	for (int i = 0; i < this->size.Y; i++)
 	{
-		for (int j = 0; j < this->size.Y; j++)
+		for (int j = 0; j < this->size.X; j++)
 		{
-			for (int k = 0; k < entitySize.X; k++)
+			for (int k = 0; k < entitySize.Y; k++)
 			{
-				for (int l = 0; l < entitySize.Y; l++)
+				for (int l = 0; l < entitySize.X; l++)
 				{
 					if (this->texture[i][j].isPainted && entity[k][l].isPainted)
 					{

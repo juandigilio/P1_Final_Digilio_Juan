@@ -14,8 +14,8 @@ public:
 	Menu();
 	~Menu();
 
-	void ShowMenu(ConsoleHandler& console);
-	void ShowInstructions(ConsoleHandler& consoleData);
-	void CheckMenuInput(ConsoleHandler& consoleData);
+	void ShowMain(ConsoleHandler* console);
+	void ShowInstructions(ConsoleHandler* consoleData);
+	void GetMenuInput(ConsoleHandler* consoleData);
 };
 

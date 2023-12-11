@@ -9,7 +9,7 @@ class Asteroid : public Entity
 {
 public:
 
-	Asteroid(COORD position, COORD size, Color color);
+	Asteroid(COORD position, COORD size, Color color, int refreshRate);
 	~Asteroid();
 
 	void LoadTexture();

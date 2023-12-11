@@ -1,6 +1,6 @@
 #include "Bullet.h"
 
-Bullet::Bullet(COORD position, COORD size, Color color) : Entity(position, size, color)
+Bullet::Bullet(COORD position, COORD size, Color color, int refreshRate) : Entity(position, size, color, refreshRate)
 {
 
 }
@@ -17,9 +17,9 @@ void Bullet::LoadTexture()
 	{' ',' ',' '},
 	};
 
-	for (int i = 0; i < size.X; i++)
+	for (int i = 0; i < size.Y; i++)
 	{
-		for (int j = 0; j < size.Y; j++)
+		for (int j = 0; j < size.X; j++)
 		{
 			texture[i][j].image = textureToLoad[i][j];
 

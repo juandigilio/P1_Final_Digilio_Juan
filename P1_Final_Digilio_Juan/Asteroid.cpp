@@ -8,27 +8,28 @@
 using namespace std;
 
 
-Asteroid::Asteroid(COORD position, COORD size, Color color) : Entity(position, size, color)
+Asteroid::Asteroid(COORD position, COORD size, Color color, int refreshRate) : Entity(position, size, color, refreshRate)
 {
 
 }
 
 Asteroid::~Asteroid()
 {
-	cout << "Enemy deleted!";
+
 }
 
 void Asteroid::LoadTexture()
 {
-	char textureToLoad[3][3] = {
-	{' ','O',' '},
-	{'/','|',92},
-	{'/',' ',92},
+	char textureToLoad[4][4] = {
+	{' ','*','*',' '},
+	{'*','*','*','*'},
+	{'*','*','*','*'},
+	{' ','*','*',' '},
 	};
 
-	for (int i = 0; i < size.X; i++)
+	for (int i = 0; i < size.Y; i++)
 	{
-		for (int j = 0; j < size.Y; j++)
+		for (int j = 0; j < size.X; j++)
 		{
 			texture[i][j].image = textureToLoad[i][j];
 
@@ -59,8 +60,9 @@ void Asteroid::CheckLimits(ConsoleHandler* console)
 
 	if (actualPos.X < leftLimit)
 	{
-		isAlive = false;
 		Clean(console);
+		actualPos.X = leftLimit;
+		isAlive = false;
 	}
 }
 
@@ -68,7 +70,9 @@ void Asteroid::SetRandPos(ConsoleHandler* console)
 {
 	srand(time(NULL));
 
-	COORD newPos{ console->consoleWide - 2, (rand() % console->consoleHeight - 4) + 2 };
+	int y = (rand() % (console->consoleHeight - 6)) + 2;
+
+	COORD newPos{ console->consoleWide - 1,  y };
 
 	SetPosition(console, newPos);
 }

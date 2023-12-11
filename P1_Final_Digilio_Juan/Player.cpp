@@ -7,7 +7,7 @@
 
 using namespace std;
 
-Player::Player(COORD position, COORD size, Color color) : Entity(position, size, color)
+Player::Player(COORD position, COORD size, Color color, int refreshRate) : Entity(position, size, color, refreshRate)
 {
 	maxLives = 6;
 	availableLives = 3;
@@ -29,17 +29,29 @@ void Player::GetInput(ConsoleHandler* console)
 		{
 			availableLives = 0;
 		}
+		else if (input == 'Q')
+		{
+			isShooting = true;
+		}
 	}
 }
 
-void Player::AddLives(int lives)
+Bullet** Player::GetBullets(ConsoleHandler* console)
 {
-	availableLives += lives;
+	int bulletRefreshRate = 30;
 
-	if (availableLives > 6)
-	{
-		availableLives = 6;
-	}
+	Bullet* left = new Bullet(GetLeftGunPos(), console->bulletSize, Color::grey, bulletRefreshRate);
+	left->LoadTexture();
+	Bullet* right = new Bullet(GetRightGunPos(), console->bulletSize, Color::grey, bulletRefreshRate);
+	right->LoadTexture();
+
+	Bullet* bullets[2];
+	bullets[0] = left;
+	bullets[1] = right;
+
+	isShooting = false;
+
+	return bullets;
 }
 
 void Player::LoadTexture()
@@ -48,14 +60,14 @@ void Player::LoadTexture()
 	{' ',201,62,' '},
 	{' ',186,' ',' '},
 	{201,202,205,187},
-	{200,203,205,187},
+	{200,203,205,188},
 	{' ',186,' ',' '},
 	{' ',200,62,' '},
 	};
 
-	for (int i = 0; i < size.X; i++)
+	for (int i = 0; i < size.Y; i++)
 	{
-		for (int j = 0; j < size.Y; j++)
+		for (int j = 0; j < size.X; j++)
 		{
 			texture[i][j].image = textureToLoad[i][j];
 

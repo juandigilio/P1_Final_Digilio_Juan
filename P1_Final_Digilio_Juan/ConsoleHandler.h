@@ -32,6 +32,9 @@ public:
 	COORD menu2;
 	COORD menu3;
 
+	const COORD playerSize = { 4, 6 };
+	const COORD asteroidSize = { 4, 4 };
+	const COORD bulletSize = { 3, 2 };
 
 	ConsoleHandler();
 	~ConsoleHandler();
