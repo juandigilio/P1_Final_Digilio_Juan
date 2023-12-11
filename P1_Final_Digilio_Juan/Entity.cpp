@@ -98,21 +98,22 @@ void Entity::Clean(ConsoleHandler* console)
 	COORD cursorPos = lastPos;
 
 	int leftLimit = 1;
-	int rightLimit = console->consoleWide - 2;
+	int rightLimit = console->consoleWide - 1;
 
 	SetConsoleTextAttribute(console->hwnd, color);
 
 	for (int i = 0; i < size.Y; i++)
 	{
-		SetConsoleCursorPosition(console->hwnd, cursorPos);
-
-		if (cursorPos.X > leftLimit && cursorPos.X < rightLimit)
+		SetConsoleCursorPosition(console->hwnd, cursorPos);	
+		
+		for (int j = 0; j < size.X; j++)
 		{
-			for (int j = 0; j < size.X; j++)
+			if (cursorPos.X + j > leftLimit && cursorPos.X + j < rightLimit)
 			{
 				cout << ' ';
 			}
 		}
+		
 		
 		cursorPos.Y++;
 	}

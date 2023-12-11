@@ -89,6 +89,7 @@ void GamePlay::RunGame()
 
 			if (keepPlaying && mainMenu)
 			{
+				menu->ShowMain(console);
 				menu->GetMenuInput(console);
 			}
 
@@ -234,13 +235,15 @@ void GamePlay::ResetGame()
 	player->SetPosition(console, center);
 
 	entities.push_back(player);
+
+	hud->UpdateLives(console, player);
 }
 
 void GamePlay::ManageEnemies()
 {
 	int asteroidsRefreshRate = 70;
 
-	if (enemySpawn->ElapsedTime(5000))
+	if (enemySpawn->ElapsedTime(500))
 	{
 		Asteroid* asteroid = new Asteroid({ 0, 0 }, console->asteroidSize, Color::grey, asteroidsRefreshRate);
 		asteroid->SetRandPos(console);

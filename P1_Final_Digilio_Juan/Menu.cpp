@@ -30,6 +30,10 @@ void Menu::ShowMain(ConsoleHandler* consoleData)
 
 	bool mainMenu = true;
 
+	system("cls");
+
+	consoleData->DrawFrame(0);
+
 	thisCursor.X = (consoleData->consoleWide / 2) - (welcome.length() / 2);
 	thisCursor.Y = (consoleData->consoleHeight / 20) * 8;
 	SetConsoleTextAttribute(consoleData->hwnd, 10);
@@ -63,8 +67,12 @@ void Menu::ShowMain(ConsoleHandler* consoleData)
 
 void Menu::ShowInstructions(ConsoleHandler* consoleData)
 {
-	string inst1 = "W/S to move and SPACE to shoot...";
+	string inst1 = "W/S to move and Q to shoot...";
 	string clean = "                                   ";
+
+	system("cls");
+
+	consoleData->DrawFrame(0);
 
 	consoleData->cursorPosition.X = (consoleData->consoleWide / 2) - (inst1.length() / 2);
 	consoleData->cursorPosition.Y = (consoleData->consoleHeight / 2) - 4;
